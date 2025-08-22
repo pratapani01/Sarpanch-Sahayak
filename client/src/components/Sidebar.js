@@ -15,10 +15,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     // It becomes visible when `isOpen` is true
     // On medium screens and larger (`md:`), it's always visible
     <div
-      className={`fixed inset-y-0 left-0 transform ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-white h-full shadow-md z-30`}
-    >
+  className={`fixed top-16 left-0 h-[calc(100vh-64px)] transform ${ // Starts from top-16 (navbar height)
+    isOpen ? 'translate-x-0' : '-translate-x-full'
+  } md:relative md:top-0 md:h-full md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-white shadow-md z-30`}
+>
       <div className="p-5">
         <h2 className="text-xl font-bold text-gray-800">Filter by Status</h2>
         <nav className="mt-5">
