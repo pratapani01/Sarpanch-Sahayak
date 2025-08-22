@@ -6,6 +6,8 @@ const User = require('../models/User.js');
 
 // @route   POST /api/users/register
 // @desc    Register a new user
+// @route   POST /api/users/register
+// @desc    Register a new user
 router.post('/register', async (req, res) => {
   console.log('--- ENTERED /api/users/register ROUTE ---');
   try {
@@ -20,7 +22,22 @@ router.post('/register', async (req, res) => {
     }
     console.log('Result: User does not exist. Proceeding.');
 
-    user = new User({ name, email, password });
+    // --- NEW LOGIC TO CHECK ROLE ---
+    // By default, the role is 'citizen'
+    let role = 'citizen';
+    // Check if the registering email matches the Sarpanch's email from the .env file
+    if (email === process.env.SARPANCH_EMAIL) {
+      role = 'sarpanch';
+      console.log('Sarpanch email detected. Assigning role: sarpanch');
+    }
+    // --- END OF NEW LOGIC ---
+
+    user = new User({
+      name,
+      email,
+      password,
+      role, // Use the determined role here
+    });
 
     console.log('Step 2: Hashing password...');
     const salt = await bcrypt.genSalt(10);
