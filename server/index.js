@@ -7,35 +7,29 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
 
-// --- DEBUGGING LOGS START ---
-console.log("Starting server...");
-console.log(`MONGO_URI Loaded: ${process.env.MONGO_URI ? 'Yes' : 'No'}`);
-console.log(`JWT_SECRET Loaded: ${process.env.JWT_SECRET ? 'Yes' : 'No'}`);
-console.log(`CLOUDINARY_CLOUD_NAME Loaded: ${process.env.CLOUDINARY_CLOUD_NAME ? 'Yes' : 'No'}`);
-// --- DEBUGGING LOGS END ---
-
 // Connect to the database
 connectDB();
 
 const app = express();
 
+// CORS configuration to allow requests from your live frontend
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'https://sarpanch-sahayak.vercel.app'
-  ],
+  origin: 'https://sarpanch-sahayak.vercel.app',
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 
 app.use(express.json());
 
+// Set the port for Render's environment, default to 5000 for local dev
 const PORT = process.env.PORT || 5000;
 
+// Root route (can also serve as a health check)
 app.get('/', (req, res) => {
-  res.json({ message: "Welcome to the Sarpanch Sahayak API!" });
+  res.json({ message: "Welcome to the Sarpanch Sahayak API! Status: Healthy" });
 });
 
+// API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/complaints', complaintRoutes);
 
