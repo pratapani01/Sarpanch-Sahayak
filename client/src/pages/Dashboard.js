@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import SubmitComplaint from './SubmitComplaint'; // Citizen's view
-import ComplaintList from '../components/ComplaintList'; // Sarpanch's view
+import { Navigate } from 'react-router-dom';
+import SubmitComplaint from './SubmitComplaint';
+import ComplaintList from '../components/ComplaintList';
+import Sidebar from '../components/Sidebar'; // Import the Sidebar
 
 const Dashboard = () => {
   const [userRole, setUserRole] = useState(null);
@@ -12,28 +14,27 @@ const Dashboard = () => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        // Token se user ka role nikalein
-        setUserRole(decodedToken.user.role); 
-      } catch (error) {
-        console.error('Invalid token:', error);
-      }
+        setUserRole(decodedToken.user.role);
+      } catch (error) { console.error('Invalid token:', error); }
     }
     setLoading(false);
   }, []);
 
-  // Jab tak role load ho raha hai, loading message dikhayein
-  if (loading) {
-    return <div className="text-center p-10">Loading Dashboard...</div>;
-  }
+  if (loading) return <div className="p-10 text-center">Loading...</div>;
 
-  // Role ke aadhar par sahi component dikhayein
   if (userRole === 'sarpanch') {
-    return <ComplaintList />;
+    // Sarpanch gets the Sidebar + Complaint List layout
+    return (
+      <div className="flex h-[calc(100vh-64px)]"> {/* Full height minus navbar */}
+        <Sidebar />
+        <ComplaintList />
+      </div>
+    );
   } else if (userRole === 'citizen') {
     return <SubmitComplaint />;
   } else {
-    // Agar kisi wajah se role nahi milta, toh ek error message dikhayein
-    return <div className="text-center p-10 text-red-500">Could not determine user role. Please log in again.</div>;
+    // If no role, redirect to login
+    return <Navigate to="/login" />;
   }
 };
 

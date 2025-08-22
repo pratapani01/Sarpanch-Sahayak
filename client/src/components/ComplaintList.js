@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams to read URL
 import api from '../services/api';
 
 const ComplaintList = () => {
-  const [categorizedComplaints, setCategorizedComplaints] = useState({});
+  const { status: statusFilter } = useParams(); // Get the status from the URL, e.g., 'pending'
+  const [complaints, setComplaints] = useState([]);
+  const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const fetchComplaints = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No token found');
       const config = { headers: { 'x-auth-token': token } };
       const res = await api.get('/complaints', config);
-      const grouped = res.data.reduce((acc, complaint) => {
-        const category = complaint.category;
-        if (!acc[category]) acc[category] = [];
-        acc[category].push(complaint);
-        return acc;
-      }, {});
-      setCategorizedComplaints(grouped);
+      setComplaints(res.data);
     } catch (err) {
       setError('Failed to fetch complaints.');
       console.error(err);
@@ -31,36 +29,69 @@ const ComplaintList = () => {
     fetchComplaints();
   }, []);
 
-  // NEW FUNCTION to handle status change
+  // This new effect runs whenever the filter or the main complaints list changes
+  useEffect(() => {
+    if (statusFilter && statusFilter !== 'all') {
+      const filtered = complaints.filter(c => c.status.toLowerCase().replace(' ', '-') === statusFilter);
+      setFilteredComplaints(filtered);
+    } else {
+      setFilteredComplaints(complaints);
+    }
+  }, [statusFilter, complaints]);
+
+
   const handleStatusChange = async (id, newStatus) => {
+    // ... (This function remains the same as before)
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { 'x-auth-token': token } };
-      // Send the new status to the backend
       await api.put(`/complaints/${id}/status`, { status: newStatus }, config);
-      // Refresh the list to show the change
       fetchComplaints(); 
     } catch (err) {
       alert('Failed to update status.');
       console.error(err);
     }
   };
+  
+  // Analytics Cards
+  const total = complaints.length;
+  const pending = complaints.filter(c => c.status === 'Pending').length;
+  const resolved = complaints.filter(c => c.status === 'Resolved').length;
 
-  if (loading) return <div className="text-center p-10">Loading complaints...</div>;
-  if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
+  if (loading) return <div className="p-10 text-center">Loading...</div>;
+  if (error) return <div className="p-10 text-center text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <h1 className="text-3xl font-bold mb-8">All Submitted Complaints</h1>
-      {Object.keys(categorizedComplaints).length === 0 ? (
-        <p>No complaints have been submitted yet.</p>
+    <div className="flex-1 p-4 md:p-8 overflow-y-auto">
+      <h1 className="text-3xl font-bold mb-6">Complaints Dashboard</h1>
+      
+      {/* Stat Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold">{total}</h2>
+          <p>Total Complaints</p>
+        </div>
+        <div className="bg-yellow-500 text-white p-4 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold">{pending}</h2>
+          <p>Pending</p>
+        </div>
+        <div className="bg-green-500 text-white p-4 rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold">{resolved}</h2>
+          <p>Resolved</p>
+        </div>
+      </div>
+      
+      <h2 className="text-2xl font-semibold mb-4 capitalize">
+        {statusFilter ? statusFilter.replace('-', ' ') : 'All'} Complaints ({filteredComplaints.length})
+      </h2>
+      
+      {filteredComplaints.length === 0 ? (
+        <p>No complaints found for this status.</p>
       ) : (
-        Object.keys(categorizedComplaints).map(category => (
-          <div key={category} className="mb-10">
-            <h2 className="text-2xl font-semibold mb-4 pb-2 border-b-2 border-indigo-500">{category}</h2>
-            <div className="space-y-6">
-              {categorizedComplaints[category].map((complaint) => (
-                <div key={complaint._id} className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="space-y-6">
+          {filteredComplaints.map((complaint) => (
+            // The complaint card JSX remains the same as before
+            <div key={complaint._id} className="bg-white p-6 rounded-lg shadow-lg">
                   <div className="flex flex-col md:flex-row gap-6">
                     {/* Image Section */}
                     <div className="md:w-1/3">
@@ -69,6 +100,9 @@ const ComplaintList = () => {
                     {/* Details Section */}
                     <div className="md:w-2/3">
                        <div className="flex justify-between items-start mb-2">
+                         <span className="text-sm font-semibold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-full">
+                          {complaint.category}
+                        </span>
                         <span className={`text-sm font-bold px-3 py-1 rounded-full ${
                           complaint.status === 'Pending' ? 'bg-yellow-200 text-yellow-800' :
                           complaint.status === 'In Progress' ? 'bg-blue-200 text-blue-800' :
@@ -85,7 +119,7 @@ const ComplaintList = () => {
                       </div>
                     </div>
                   </div>
-                  {/* NEW Dropdown for changing status */}
+                  {/* Dropdown for changing status */}
                   <div className="mt-4 border-t pt-4">
                     <label htmlFor={`status-${complaint._id}`} className="block text-sm font-medium text-gray-700">Change Status:</label>
                     <select
@@ -100,10 +134,8 @@ const ComplaintList = () => {
                     </select>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
