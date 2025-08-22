@@ -1,85 +1,84 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const User = require('../models/User.js'); // Dekhiye, yahan hum aapki banayi hui User.js file ko use kar rahe hain
-const jwt = require('jsonwebtoken'); // Make sure to require this at the top of the file
+const jwt = require('jsonwebtoken');
+const User = require('../models/User.js');
+
 // @route   POST /api/users/register
 // @desc    Register a new user
 router.post('/register', async (req, res) => {
+  console.log('--- ENTERED /api/users/register ROUTE ---');
   try {
     const { name, email, password } = req.body;
+    console.log('Request body received:', { name, email });
 
-    // Check if user already exists
+    console.log('Step 1: Checking if user exists...');
     let user = await User.findOne({ email });
     if (user) {
+      console.log('Result: User found. Aborting registration.');
       return res.status(400).json({ message: 'User with this email already exists' });
     }
+    console.log('Result: User does not exist. Proceeding.');
 
-    // Create a new user instance
-    user = new User({
-      name,
-      email,
-      password,
-    });
+    user = new User({ name, email, password });
 
-    // Hash the password before saving
+    console.log('Step 2: Hashing password...');
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
+    console.log('Result: Password hashed.');
 
-    // Save the user to the database
+    console.log('Step 3: Saving user to database...');
     await user.save();
+    console.log('Result: User saved successfully.');
 
     res.status(201).json({ message: 'User registered successfully!' });
-
   } catch (error) {
-    console.error(error.message);
+    console.error('!!! CRITICAL ERROR IN REGISTER ROUTE !!!:', error);
     res.status(500).send('Server Error');
   }
 });
 
-
-
-// ... your existing /register route is here ...
-
 // @route   POST /api/users/login
 // @desc    Login a user and get a token
-// @access  Public
 router.post('/login', async (req, res) => {
+  console.log('--- ENTERED /api/users/login ROUTE ---');
   try {
     const { email, password } = req.body;
+    console.log('Request body received:', { email });
 
-    // 1. Check if user exists
+    console.log('Step 1: Finding user in database...');
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('Result: User not found.');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+    console.log('Result: User found.');
 
-    // 2. Compare the provided password with the stored hashed password
+    console.log('Step 2: Comparing passwords...');
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Result: Passwords do not match.');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
+    console.log('Result: Passwords match.');
 
-    // 3. If passwords match, create a JWT
+    console.log('Step 3: Creating JWT...');
     const payload = {
-      user: {
-        id: user.id,
-        role: user.role, // We can include the role for frontend logic
-      },
+      user: { id: user.id, role: user.role },
     };
 
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: '5h' }, // Token expires in 5 hours
+      { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token }); // Send the token to the client
+        console.log('Result: JWT created successfully.');
+        res.json({ token });
       }
     );
-
   } catch (error) {
-    console.error(error.message);
+    console.error('!!! CRITICAL ERROR IN LOGIN ROUTE !!!:', error);
     res.status(500).send('Server Error');
   }
 });
