@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import api from '../services/api'; // Import our new api service
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import api from '../services/api';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -8,32 +9,38 @@ const Register = () => {
     password: '',
   });
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const { name, email, password } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // UPDATED ONSUBMIT FUNCTION
+  // This is the updated onSubmit function with auto-login
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Create the user object to send
-      const newUser = {
-        name,
-        email,
-        password,
-      };
+      const newUser = { name, email, password };
 
-      // Send a POST request to the /users/register endpoint
-      const res = await api.post('/users/register', newUser);
+      // Step 1: Register the new user
+      await api.post('/users/register', newUser);
+      console.log('Registration successful');
 
-      console.log('Server response:', res.data);
-      alert('Registration successful!'); // We'll replace this with better UI later
+      // Step 2: Automatically log in the new user
+      const loginRes = await api.post('/users/login', { email, password });
+      
+      // Step 3: Save the token and redirect to the dashboard
+      localStorage.setItem('token', loginRes.data.token);
+      console.log('Auto-login successful, token saved.');
+      
+      // Navigate to the dashboard after successful registration and login
+      navigate('/dashboard');
 
     } catch (err) {
-      console.error('Registration error:', err.response.data);
-      alert('Error: ' + err.response.data.message); // Show error message from server
+      const errorMessage = err.response ? err.response.data.message : 'An error occurred. Please try again.';
+      console.error('Registration/Login error:', errorMessage);
+      alert('Error: ' + errorMessage);
     }
   };
 
@@ -42,7 +49,6 @@ const Register = () => {
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Create Your Account</h2>
         <form onSubmit={onSubmit} className="space-y-6">
-          {/* Input fields remain the same */}
           <div>
             <label
               htmlFor="name"

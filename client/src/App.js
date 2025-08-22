@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage'; // Import the new HomePage
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import HomePage from './pages/HomePage';
-import PrivateRoute from './components/PrivateRoute'; // 1. Import PrivateRoute
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -18,10 +18,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Protected Routes */}
+          {/* Protected Route for Dashboard */}
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* Add any other private routes here in the future */}
           </Route>
         </Routes>
       </main>
