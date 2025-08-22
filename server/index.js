@@ -14,8 +14,15 @@ connectDB();
 const app = express();
 
 // Enable CORS to allow your frontend to communicate with the backend
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:3000', // For your local machine
+    'https://sarpanch-sahayak.vercel.app' // Your live frontend URL
+  ],
+  optionsSuccessStatus: 200
+};
 
+app.use(cors(corsOptions));
 // Middleware to accept JSON data in requests
 app.use(express.json());
 
