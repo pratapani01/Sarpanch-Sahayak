@@ -68,4 +68,37 @@ router.get('/', auth, async (req, res) => {
 });
 
 
+// @route   PUT /api/complaints/:id/status
+// @desc    Update the status of a complaint
+// @access  Private (for Sarpanch)
+router.put('/:id/status', auth, async (req, res) => {
+  // We'll add a check here later to ensure only a sarpanch can do this
+  if (req.user.role !== 'sarpanch') {
+    return res.status(403).json({ message: 'User not authorized' });
+  }
+
+  try {
+    const { status } = req.body;
+
+    // Find the complaint by its ID
+    let complaint = await Complaint.findById(req.params.id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+    // Update the status and save
+    complaint.status = status;
+    await complaint.save();
+
+    // To return the updated complaint with user info, we need to populate it again
+    complaint = await complaint.populate('submittedBy', 'name email');
+
+    res.json(complaint);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
