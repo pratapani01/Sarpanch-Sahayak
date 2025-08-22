@@ -1,0 +1,10 @@
+# Dependencies
+node_modules
+/client/node_modules
+
+# Environment variables (important for security)
+.env
+/server/.env
+
+# Production build folder
+/client/build
