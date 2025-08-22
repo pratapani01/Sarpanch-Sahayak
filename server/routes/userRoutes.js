@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
 
     console.log('Step 3: Creating JWT...');
     const payload = {
-      user: { id: user.id, role: user.role },
+      user: { id: user.id, name: user.name, role: user.role },
     };
 
     jwt.sign(
