@@ -14,9 +14,13 @@ const app = express();
 
 // CORS configuration to allow requests from your live frontend
 const corsOptions = {
-  origin: 'https://sarpanch-sahayak.vercel.app',
+  origin: [
+    'https://sarpanch-sahayak.vercel.app', // For the live site
+    'http://localhost:3000'                 // For local development
+  ],
   optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
