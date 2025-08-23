@@ -50,15 +50,37 @@ router.post(
   }
 );
 
+// --- NEW ROUTE ADDED HERE ---
+// @route   GET /api/complaints/mycomplaints
+// @desc    Get complaints for the logged-in user
+// @access  Private
+router.get('/mycomplaints', auth, async (req, res) => {
+  try {
+    const complaints = await Complaint.find({ submittedBy: req.user.id }).sort({
+      createdAt: -1,
+    });
+
+    if (!complaints) {
+      return res.status(404).json({ message: 'No complaints found for this user' });
+    }
+
+    res.json(complaints);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+// --- END OF NEW ROUTE ---
+
+
 // @route   GET /api/complaints
-// @desc    Get all complaints
+// @desc    Get all complaints (for Sarpanch)
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    // Find all complaints and sort them by the newest first
     const complaints = await Complaint.find()
       .sort({ createdAt: -1 })
-      .populate('submittedBy', 'name email'); // Get the name and email of the user who submitted
+      .populate('submittedBy', 'name email');
 
     res.json(complaints);
   } catch (err) {
@@ -72,26 +94,20 @@ router.get('/', auth, async (req, res) => {
 // @desc    Update the status of a complaint
 // @access  Private (for Sarpanch)
 router.put('/:id/status', auth, async (req, res) => {
-  // We'll add a check here later to ensure only a sarpanch can do this
   if (req.user.role !== 'sarpanch') {
     return res.status(403).json({ message: 'User not authorized' });
   }
 
   try {
     const { status } = req.body;
-
-    // Find the complaint by its ID
     let complaint = await Complaint.findById(req.params.id);
 
     if (!complaint) {
       return res.status(404).json({ message: 'Complaint not found' });
     }
 
-    // Update the status and save
     complaint.status = status;
     await complaint.save();
-
-    // To return the updated complaint with user info, we need to populate it again
     complaint = await complaint.populate('submittedBy', 'name email');
 
     res.json(complaint);
