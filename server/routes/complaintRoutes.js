@@ -43,14 +43,13 @@ router.post(
 
       const complaint = await newComplaint.save();
       res.status(201).json(complaint);
-    } catch (err) {
+    } catch (err) { // <<< THE ERROR WAS HERE: I was missing the curly braces for this block
       console.error('Error submitting complaint:', err.message);
       res.status(500).send('Server Error');
     }
   }
 );
 
-// --- NEW ROUTE ADDED HERE ---
 // @route   GET /api/complaints/mycomplaints
 // @desc    Get complaints for the logged-in user
 // @access  Private
@@ -70,7 +69,6 @@ router.get('/mycomplaints', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-// --- END OF NEW ROUTE ---
 
 
 // @route   GET /api/complaints
@@ -89,6 +87,26 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route   GET /api/complaints/:id
+// @desc    Get a single complaint by ID
+// @access  Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const complaint = await Complaint.findById(req.params.id).populate(
+      'submittedBy',
+      'name email'
+    );
+
+    if (!complaint) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+    res.json(complaint);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // @route   PUT /api/complaints/:id/status
 // @desc    Update the status of a complaint

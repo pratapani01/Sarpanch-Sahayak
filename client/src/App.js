@@ -5,7 +5,8 @@ import HomePage from './pages/HomePage';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import MyComplaints from './pages/MyComplaints'; // 1. Naya page import karein
+import MyComplaints from './pages/MyComplaints';
+import ComplaintDetail from './pages/ComplaintDetail'; // 1. Import the new page
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Navigate to="/dashboard/all" replace />} />
             <Route path="/dashboard/:status" element={<Dashboard />} />
-            <Route path="/my-complaints" element={<MyComplaints />} /> {/* 2. Naya route add karein */}
+            <Route path="/my-complaints" element={<MyComplaints />} />
+            {/* 2. Add the new route with a dynamic ID */}
+            <Route path="/complaint/:id" element={<ComplaintDetail />} />
           </Route>
         </Routes>
       </main>
