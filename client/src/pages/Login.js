@@ -26,7 +26,7 @@ const Login = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/background.avif')" }}
     >
-      <div className="w-full max-w-md p-8 space-y-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white/20 backdrop-blur-lg rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login to Your Account</h2>
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
