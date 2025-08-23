@@ -36,15 +36,12 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-800 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        {/* FIX 1: This link now ALWAYS goes to the homepage ("/") */}
         <Link to="/" className="text-white text-xl md:text-2xl font-bold">
           Sarpanch Sahayak
         </Link>
         <div className="space-x-4 md:space-x-6 flex items-center">
           {user ? (
-            // If user is logged in
             <>
-              {/* FIX 2: Removed "hidden md:block" so the link is visible on all screen sizes */}
               <Link to="/dashboard/all" className="text-gray-300 hover:text-white">
                 Dashboard
               </Link>
@@ -61,6 +58,13 @@ const Navbar = () => {
                       <span className="font-semibold">{user.name}</span>
                     </div>
                     <div className="border-t border-gray-100"></div>
+                    {/* --- NEW LINK ADDED HERE --- */}
+                    {user.role === 'citizen' && (
+                       <Link to="/my-complaints" onClick={() => setIsDropdownOpen(false)} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        My Complaints
+                      </Link>
+                    )}
+                    {/* --- END OF NEW LINK --- */}
                     <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       Logout
                     </button>
@@ -69,7 +73,6 @@ const Navbar = () => {
               </div>
             </>
           ) : (
-            // If user is logged out
             <>
               <Link to="/register" className="text-gray-300 hover:text-white">Register</Link>
               <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
