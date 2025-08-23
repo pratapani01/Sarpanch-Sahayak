@@ -47,6 +47,7 @@ const HomePage = () => {
       <div className="container mx-auto px-4 md:px-8 py-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Village Photo Gallery</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <img src="/images/village0.avif" alt="Village Scene 0" className="w-full h-48 object-cover rounded-lg shadow-md" />
           <img src="/images/village1.jpg" alt="Village Scene 1" className="w-full h-48 object-cover rounded-lg shadow-md" />
           <img src="/images/village2.jpg" alt="Village Scene 2" className="w-full h-48 object-cover rounded-lg shadow-md" />
           <img src="/images/village3.jpg" alt="Village Scene 3" className="w-full h-48 object-cover rounded-lg shadow-md" />
