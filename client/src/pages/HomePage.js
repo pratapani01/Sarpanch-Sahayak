@@ -36,9 +36,9 @@ const HomePage = () => {
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-gray-700 mb-3">Important Contacts</h2>
           <ul className="list-disc list-inside text-gray-600 space-y-2">
-            <li><strong>Sarpanch:</strong> Shri. Balwant Singh(Bala)</li>
-            <li><strong>Secretary:</strong> Smt. Sangeeta Kushwaha</li>
-            <li><strong>Local Police Station:</strong> 112</li>
+            <li><strong>Sarpanch:</strong> Shri. Balwant Singh(Bala) <a href="tel:+919876543210" className="text-indigo-600 hover:underline">(+91 9876543210)</a></li>
+            <li><strong>Secretary:</strong> Smt. Sangeeta Kushwaha <a href="tel:+918765432109" className="text-indigo-600 hover:underline">(+91 8765432109)</a></li>
+            <li><strong>Local Police Station:</strong> <a href="tel:112" className="text-indigo-600 hover:underline">112</a></li>
           </ul>
         </div>
       </div>
@@ -47,23 +47,22 @@ const HomePage = () => {
       <div className="container mx-auto px-4 md:px-8 py-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Village Photo Gallery</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <img src="/images/village0.avif" alt="Village Scene 0" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village1.jpg" alt="Village Scene 1" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village2.jpg" alt="Village Scene 2" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village3.jpg" alt="Village Scene 3" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village4.jpg" alt="Village Scene 4" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village5.jpg" alt="Village Scene 5" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village6.jpg" alt="Village Scene 6" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village7.jpg" alt="Village Scene 7" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village8.jpg" alt="Village Scene 8" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village9.jpg" alt="Village Scene 9" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village10.jpg" alt="Village Scene 10" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village11.jpg" alt="Village Scene 11" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village12.jpg" alt="Village Scene 12" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village13.jpg" alt="Village Scene 13" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village14.jpg" alt="Village Scene 14" className="w-full h-48 object-cover rounded-lg shadow-md" />
-          <img src="/images/village15.jpg" alt="Village Scene 15" className="w-full h-48 object-cover rounded-lg shadow-md" />
-
+          <img src="/images/village0.avif" alt="Village Scene 0" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village1.jpg" alt="Village Scene 1" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village2.jpg" alt="Village Scene 2" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village3.jpg" alt="Village Scene 3" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village4.jpg" alt="Village Scene 4" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village5.jpg" alt="Village Scene 5" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village6.jpg" alt="Village Scene 6" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village7.jpg" alt="Village Scene 7" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village8.jpg" alt="Village Scene 8" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village9.jpg" alt="Village Scene 9" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village10.jpg" alt="Village Scene 10" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village11.jpg" alt="Village Scene 11" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village12.jpg" alt="Village Scene 12" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village13.jpg" alt="Village Scene 13" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village14.jpg" alt="Village Scene 14" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
+          <img src="/images/village15.jpg" alt="Village Scene 15" className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
         </div>
       </div>
 
