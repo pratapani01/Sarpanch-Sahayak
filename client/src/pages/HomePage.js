@@ -36,8 +36,8 @@ const HomePage = () => {
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-gray-700 mb-3">Important Contacts</h2>
           <ul className="list-disc list-inside text-gray-600 space-y-2">
-            <li><strong>Sarpanch:</strong> Smt. Balika Devi</li>
-            <li><strong>Secretary:</strong> Shri. Ram Kumar</li>
+            <li><strong>Sarpanch:</strong> Shri. Balwant Singh(Bala)</li>
+            <li><strong>Secretary:</strong> Smt. Sangeeta Kushwaha</li>
             <li><strong>Local Police Station:</strong> 112</li>
           </ul>
         </div>
