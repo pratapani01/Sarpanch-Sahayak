@@ -77,8 +77,8 @@ const ComplaintList = () => {
         <div className="space-y-6">
           {filteredComplaints.map((complaint) => (
             <Link to={`/complaint/${complaint._id}`} key={complaint._id} className="block hover:bg-gray-50 transition duration-300">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex flex-col md:flex-row gap-6">
+<div className="bg-white p-6 rounded-lg shadow-lg border-4 border-red-500">
+                  <div className="flex flex-col md:flex-row gap-6">
                   <div className="md:w-1/3"><img src={complaint.imageUrl} alt={complaint.category} className="w-full h-48 object-cover rounded-md"/></div>
                   <div className="md:w-2/3">
                     <div className="flex justify-between items-start mb-2">
