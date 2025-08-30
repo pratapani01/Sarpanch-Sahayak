@@ -58,13 +58,18 @@ const Navbar = () => {
                       <span className="font-semibold">{user.name}</span>
                     </div>
                     <div className="border-t border-gray-100"></div>
-                    {/* --- NEW LINK ADDED HERE --- */}
+                    
+                    {/* --- NEW LINKS ADDED HERE --- */}
+                    <Link to="/announcements" onClick={() => setIsDropdownOpen(false)} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Announcements
+                    </Link>
                     {user.role === 'citizen' && (
                        <Link to="/my-complaints" onClick={() => setIsDropdownOpen(false)} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         My Complaints
                       </Link>
                     )}
-                    {/* --- END OF NEW LINK --- */}
+                    {/* --- END OF NEW LINKS --- */}
+
                     <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       Logout
                     </button>

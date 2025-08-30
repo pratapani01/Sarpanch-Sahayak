@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import api from '../services/api';
-import Modal from './Modal'; // Import the new Modal component
+import Modal from './Modal';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [user, setUser] = useState(null);
@@ -34,7 +34,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
     fetchContacts();
   }, []);
-
+  
   const handleAddContact = async (e) => {
     e.preventDefault();
     try {
@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       await api.post('/contacts', newContact, config);
       setIsModalOpen(false);
       setNewContact({ name: '', phone: '' });
-      fetchContacts(); // Refresh contacts list
+      fetchContacts();
     } catch (error) {
       alert('Failed to add contact.');
       console.error(error);
@@ -56,7 +56,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         const token = localStorage.getItem('token');
         const config = { headers: { 'x-auth-token': token } };
         await api.delete(`/contacts/${id}`, config);
-        fetchContacts(); // Refresh contacts list
+        fetchContacts();
       } catch (error) {
         alert('Failed to delete contact.');
         console.error(error);
@@ -110,14 +110,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
           <hr className="my-6" />
 
-          {/* Emergency Services Section */}
+          {/* Quick Actions Section */}
           <div>
-            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Emergency Services</h2>
-            <div className="mt-3 text-sm text-gray-600 space-y-3">
-              <div><p className="font-semibold">Police</p><a href="tel:112" className="text-indigo-600 hover:underline">112</a></div>
-              <div><p className="font-semibold">Ambulance</p><a href="tel:102" className="text-indigo-600 hover:underline">102</a></div>
-              <div><p className="font-semibold">Fire Dept.</p><a href="tel:101" className="text-indigo-600 hover:underline">101</a></div>
-            </div>
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Quick Actions</h2>
+             <nav className="mt-2">
+                {/* --- NEW LINK ADDED HERE --- */}
+                <Link to="/create-announcement" onClick={toggleSidebar} className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-100 text-gray-600">
+                  Create Announcement
+                </Link>
+             </nav>
           </div>
         </div>
       </div>

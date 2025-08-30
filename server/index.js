@@ -6,7 +6,8 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
-const contactRoutes = require('./routes/contactRoutes'); // 1. Import contact routes
+const contactRoutes = require('./routes/contactRoutes'); 
+const announcementRoutes = require('./routes/announcementRoutes');
 
 // Connect to the database
 connectDB();
@@ -37,7 +38,8 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/complaints', complaintRoutes);
-app.use('/api/contacts', contactRoutes); // 2. Use the new contact routes
+app.use('/api/contacts', contactRoutes); 
+app.use('/api/announcements', announcementRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
