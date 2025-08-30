@@ -10,7 +10,6 @@ const ComplaintList = () => {
   const [error, setError] = useState('');
 
   const fetchComplaints = async () => {
-    // ... (This function remains the same)
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
@@ -31,7 +30,6 @@ const ComplaintList = () => {
   }, []);
 
   useEffect(() => {
-    // ... (This effect remains the same)
     if (statusFilter && statusFilter !== 'all') {
       const filtered = complaints.filter(c => c.status.toLowerCase().replace(' ', '-') === statusFilter);
       setFilteredComplaints(filtered);
@@ -40,7 +38,6 @@ const ComplaintList = () => {
     }
   }, [statusFilter, complaints]);
 
-  // --- UPDATED FUNCTION HERE ---
   const handleStatusChange = async (id, newStatus, e) => {
     e.stopPropagation(); // Stop the click from reaching the link
     e.preventDefault();  // Stop any default browser action
@@ -101,9 +98,8 @@ const ComplaintList = () => {
                   <select
                     id={`status-${complaint._id}`}
                     value={complaint.status}
-                    // --- UPDATED LINES HERE ---
-                    onClick={(e) => e.stopPropagation()} // Stop click on the dropdown itself
-                    onChange={(e) => handleStatusChange(complaint._id, e.target.value, e)} // Pass the event to the handler
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => handleStatusChange(complaint._id, e.target.value, e)}
                     className="mt-1 block w-full md:w-1/3 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                   >
                     <option>Pending</option>
