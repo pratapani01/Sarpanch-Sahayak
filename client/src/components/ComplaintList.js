@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Import Link
+import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 
 const ComplaintList = () => {
@@ -10,6 +10,7 @@ const ComplaintList = () => {
   const [error, setError] = useState('');
 
   const fetchComplaints = async () => {
+    // ... (This function remains the same)
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
@@ -30,6 +31,7 @@ const ComplaintList = () => {
   }, []);
 
   useEffect(() => {
+    // ... (This effect remains the same)
     if (statusFilter && statusFilter !== 'all') {
       const filtered = complaints.filter(c => c.status.toLowerCase().replace(' ', '-') === statusFilter);
       setFilteredComplaints(filtered);
@@ -38,9 +40,10 @@ const ComplaintList = () => {
     }
   }, [statusFilter, complaints]);
 
+  // --- UPDATED FUNCTION HERE ---
   const handleStatusChange = async (id, newStatus, e) => {
-    e.stopPropagation(); // Prevent the link from being triggered
-    e.preventDefault(); // Prevent default select behavior
+    e.stopPropagation(); // Stop the click from reaching the link
+    e.preventDefault();  // Stop any default browser action
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { 'x-auth-token': token } };
@@ -76,7 +79,6 @@ const ComplaintList = () => {
       ) : (
         <div className="space-y-6">
           {filteredComplaints.map((complaint) => (
-            // --- WRAP THE CARD IN A LINK HERE ---
             <Link to={`/complaint/${complaint._id}`} key={complaint._id} className="block hover:bg-gray-50 transition duration-300">
               <div className="bg-white p-6 rounded-lg shadow-lg">
                 <div className="flex flex-col md:flex-row gap-6">
@@ -95,12 +97,13 @@ const ComplaintList = () => {
                   </div>
                 </div>
                 <div className="mt-4 border-t pt-4">
-                  <label htmlFor={`status-${complaint._id}`} className="block text-sm font-medium text-gray-700">Change Status:</label>
+                  <label htmlFor={`status-${complaint._id}`} className="block text-sm font-medium text-gray-700" onClick={(e) => e.preventDefault()}>Change Status:</label>
                   <select
                     id={`status-${complaint._id}`}
                     value={complaint.status}
-                    onClick={(e) => e.stopPropagation()} // Prevent click from bubbling to the Link
-                    onChange={(e) => handleStatusChange(complaint._id, e.target.value, e)}
+                    // --- UPDATED LINES HERE ---
+                    onClick={(e) => e.stopPropagation()} // Stop click on the dropdown itself
+                    onChange={(e) => handleStatusChange(complaint._id, e.target.value, e)} // Pass the event to the handler
                     className="mt-1 block w-full md:w-1/3 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                   >
                     <option>Pending</option>
