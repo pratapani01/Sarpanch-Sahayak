@@ -109,16 +109,31 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </div>
 
           <hr className="my-6" />
-
+          
           {/* Quick Actions Section */}
           <div>
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Quick Actions</h2>
              <nav className="mt-2">
-                {/* --- NEW LINK ADDED HERE --- */}
-                <Link to="/create-announcement" onClick={toggleSidebar} className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-100 text-gray-600">
-                  Create Announcement
+                <Link to="/create-announcement" onClick={toggleSidebar} className="flex items-center gap-3 py-2.5 px-4 rounded transition duration-200 hover:bg-gray-100 text-gray-600">
+                  {/* Icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15h14a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                  </svg>
+                  <span>Create Announcement</span>
                 </Link>
              </nav>
+          </div>
+
+          <hr className="my-6" />
+          
+          {/* Emergency Services Section */}
+          <div>
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Emergency Services</h2>
+            <div className="mt-3 text-sm text-gray-600 space-y-3">
+              <div><p className="font-semibold">Police</p><a href="tel:112" className="text-indigo-600 hover:underline">112</a></div>
+              <div><p className="font-semibold">Ambilance</p><a href="tel:102" className="text-indigo-600 hover:underline">102</a></div>
+              <div><p className="font-semibold">Fire Dept.</p><a href="tel:101" className="text-indigo-600 hover:underline">101</a></div>
+            </div>
           </div>
         </div>
       </div>
